@@ -1,5 +1,7 @@
 import 'package:colocexam/models/annonce.dart';
 import 'package:colocexam/screens/home/annonce_ligne.dart';
+import 'package:colocexam/services/authService.dart';
+import 'package:colocexam/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +21,26 @@ class _Annonces_listState extends State<Annonces_list> {
         itemBuilder: (context, index) {
           return annonce_ligne(annonce: listAnonnces[index]);
         }
+    );
+  }
+}
+
+
+class ListAnnoonce extends StatelessWidget {
+  final AuthService _authService = AuthService();
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamProvider<List<Annonce>>.value(
+      value: DatabaseService().usersAnnonce,
+      child: Scaffold(
+
+        body: Container(
+
+          child:Annonces_list(),
+
+        ),
+      ),
     );
   }
 }

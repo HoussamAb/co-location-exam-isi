@@ -1,5 +1,6 @@
 import 'package:colocexam/partages/constantes.dart';
 import 'package:colocexam/partages/loading.dart';
+import 'package:colocexam/screens/map/index.dart';
 import 'package:colocexam/services/authService.dart';
 import 'package:flutter/material.dart';
 
@@ -40,6 +41,44 @@ class _RegisterState extends State<Register> {
             },
           )
         ],
+      ),
+
+      drawer: new Drawer(
+          child: new ListView(
+            children: <Widget> [
+              new DrawerHeader(
+                child:  new Text('Header'),
+              ),
+              FlatButton.icon( icon: Icon(Icons.map), label: Text('Maps') , onPressed: (){ return IndexMap();},),
+              new Divider(),
+              new ListTile(
+                title: new Text('Crée une demande'),
+                onTap: () { IndexMap();},
+              ),
+              new Divider(),
+              new ListTile(
+                title: new Text('Crée une annonce'),
+                onTap: () {},
+              ),
+              new Divider(),
+              new ListTile(
+                title: new Text('Liste des demandes'),
+                onTap: () {},
+              ),
+              new Divider(),
+              new ListTile(
+                title: new Text('Liste des annonces'),
+                onTap: () {},
+              ),
+              new Divider(),
+              new ListTile(
+                title: new Text('About'),
+                onTap: () {},
+              ),
+              new Divider(),
+
+            ],
+          )
       ),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0,horizontal: 50),
