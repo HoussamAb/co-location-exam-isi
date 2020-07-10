@@ -3,7 +3,6 @@ import 'package:colocexam/screens/home/profile.dart';
 import 'package:colocexam/services/authService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map_tappable_polyline/flutter_map_tappable_polyline.dart';
 import 'package:latlong/latlong.dart';
 import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';
 

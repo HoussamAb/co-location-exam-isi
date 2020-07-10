@@ -46,7 +46,6 @@ dependencies:
   geolocator: ^5.3.2+2
   geolocation: ^1.1.2
   flutter_map_marker_cluster: ^0.2.8
-  flutter_map_tappable_polyline: any
   url_launcher: ^5.5.0
 
 

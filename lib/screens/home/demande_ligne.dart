@@ -67,7 +67,7 @@ class _DemandeLigneState extends State<DemandeLigne> {
                 child: ListTile(
 
                   title: Text(widget.demande.cordonnees),
-                  subtitle: Text('Objet : ${widget.demande.commentaire} '),
+                  subtitle: Text('Demande : ${widget.demande.commentaire} \nBudger Max : ${widget.demande.budgesmax} Dh/mois '),
                   trailing: new PopupMenuButton(
                     key: _menuKey,
                     onSelected: (selectedDropDownItem) => handlePopUpChanged(selectedDropDownItem,mydocument.telephone),

@@ -85,9 +85,10 @@ class _RegisterState extends State<Register> {
           body : SingleChildScrollView(
               child: Container(
                 decoration: BoxDecoration(
-
                     image: DecorationImage(
-                      image: AssetImage('assets/icon_bg.png'),
+                        image: AssetImage('assets/icon_bg.png'),
+                        scale: 4.0,
+                        alignment: Alignment(0,-1)
                     )
                 ),
                 padding: EdgeInsets.symmetric(vertical: 20.0,horizontal: 50),

@@ -149,6 +149,18 @@ class _AnnonceSingleState extends State<AnnonceSingle> {
                             launch("tel:"+widget.phone);
                           },
                         ),
+                            RaisedButton(
+
+                          color: Colors.orange[200],
+                          child: Text('itinéraire',
+                            style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
+                          ),
+
+                          onPressed: (){
+                            dynamic position = widget.annonce.position.split(',');
+                            launch("https://maps.google.com/?q=" + position[0].toString() + "," + position[1].toString());
+                          },
+                        ),
                       ],
                   ),
                 ],

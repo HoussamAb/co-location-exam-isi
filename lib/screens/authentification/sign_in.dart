@@ -4,7 +4,9 @@ import 'package:colocexam/screens/map/index.dart';
 import 'package:colocexam/services/authService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
 class SignIn extends StatefulWidget {
   final Function view;
@@ -90,6 +92,8 @@ class _SignInState extends State<SignIn> {
                 decoration: BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage('assets/icon_bg.png'),
+                      scale: 4.0,
+                      alignment: Alignment(0,-1)
                     )
                 ),
                 padding: EdgeInsets.symmetric(vertical: 20.0,horizontal: 50),
