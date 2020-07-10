@@ -1,5 +1,6 @@
 import 'package:colocexam/models/demande.dart';
 import 'package:colocexam/models/user.dart';
+import 'package:colocexam/screens/home/demande_single.dart';
 import 'package:colocexam/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,35 +13,67 @@ class DemandeLigne extends StatefulWidget {
 }
 
 class _DemandeLigneState extends State<DemandeLigne> {
+
+
+
   @override
   Widget build(BuildContext context) {
-    final usersData = Provider.of<User>(context);
+
     final GlobalKey _menuKey = new GlobalKey();
+    final usersData = Provider.of<User>(context);
+    String choix;
+    String _userphone = '';
+
+    void handlePopUpChanged(String value,String phone) async {
+      choix =  value;
+      if(choix == 'voir details'){
+        _userphone = phone;
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Demandesingle(demande: widget.demande,phone: _userphone)));
+      }else if(choix == 'supprimer'){
+        if(usersData.uid == widget.demande.nuid){
+        await DatabaseService().deleteDemande(widget.demande.nuid);
+        }else{
+          Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text("vous ne pouvez pas supprimer cette demande"),
+          ));
+        }
+      }else{
+
+      }
+      /// Log the selected lucky number to the console.
+
+    }
+
+    List<String> menuitems = ['voir details','supprimer'];
+    List<PopupMenuItem> luckyNumbers = [];
+    for (String item in menuitems) {
+      luckyNumbers.add(
+          new PopupMenuItem(
+            child: new Text("$item"),
+            value: item,
+          )
+      );
+    }
 
     return StreamBuilder<UserDocument>(
         stream: DatabaseService(uid: usersData.uid).userDocument,
         builder:(context,snapshot) {
+          UserDocument mydocument = snapshot.data;
           return Padding (
 
             padding: EdgeInsets.only(top: 4.0),
             child: Card(
                 margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
                 child: ListTile(
-                  leading: CircleAvatar(
-                    radius: 25.0,
-                  ),
+
                   title: Text(widget.demande.cordonnees),
                   subtitle: Text('Objet : ${widget.demande.commentaire} '),
-                  /*trailing: new PopupMenuButton(
+                  trailing: new PopupMenuButton(
                     key: _menuKey,
-*//*
-                    onSelected: (selectedDropDownItem) => handlePopUpChanged(selectedDropDownItem),
-*//*
-*//*
+                    onSelected: (selectedDropDownItem) => handlePopUpChanged(selectedDropDownItem,mydocument.telephone),
                     itemBuilder: (BuildContext context) => luckyNumbers,
-*//*
                     tooltip: "cliquer pour selectionner une action.",
-                  ),*/
+                  ),
                   /// trailing: Icon(Icons.more_vert),
                   onTap: () {
 

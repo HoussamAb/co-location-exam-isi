@@ -32,60 +32,64 @@ class _ProfileState extends State<Profile> {
                 backgroundColor: Colors.blueGrey[100],
                 elevation: 0.0,
                 actions: <Widget>[
-                  FlatButton.icon( icon: Icon(Icons.exit_to_app), label: Text('logout') , onPressed: (){ _authService.logout();},),
+                  FlatButton.icon( icon: Icon(Icons.exit_to_app), label: Text('logout') , onPressed: ()async {  await _authService.logout();},),
                 ],
               ),
-                body : Form(
-                  key: _formkey,
-                  child: Column(
-                    children: <Widget>[
-                      SizedBox(height: 10.0,),
-                      Align(
-                          alignment: Alignment.centerLeft, child: new Text('Username :', style: TextStyle(fontSize: 12.0, ),textAlign: TextAlign.left,)),
-                      TextFormField(
-                        initialValue: mydocument.username,
-                        decoration: textFormDecor.copyWith(hintText: 'username' ),
-                        validator: (val) => val.isEmpty ? 'username is emty' : null,
-                        onChanged: (val){
-                          setState(() {
-                            _currentusername = val;
-                          });
-                        },
+                body : Padding(
+                    padding: const EdgeInsets.all(20),
+                       child: Form(
+
+                        key: _formkey,
+                        child: Column(
+                        children: <Widget>[
+                          SizedBox(height: 10.0,),
+                          Align(
+                              alignment: Alignment.centerLeft, child: new Text('Username :', style: TextStyle(fontSize: 12.0, ),textAlign: TextAlign.left,)),
+                          TextFormField(
+                            initialValue: mydocument.username,
+                            decoration: textFormDecor.copyWith(hintText: 'username' ),
+                            validator: (val) => val.isEmpty ? 'username is emty' : null,
+                            onChanged: (val){
+                              setState(() {
+                                _currentusername = val;
+                              });
+                            },
+                          ),
+                          SizedBox(height: 10.0,),
+                          Align(
+                              alignment: Alignment.centerLeft, child: new Text('Telephone :', style: TextStyle(fontSize: 12.0, ),textAlign: TextAlign.left,)),
+                          TextFormField(
+                            initialValue: mydocument.telephone,
+                            decoration: textFormDecor.copyWith(hintText: 'telephone' ),
+                            validator: (val) => val.isEmpty ? 'telephone is emty' : null,
+                            onChanged: (val){
+                              setState(() {
+                                _currentphone = val;
+                              });
+                            },
+                          ),
+                          SizedBox(height: 10.0,),
+                          Align(
+                              alignment: Alignment.centerLeft, child: new Text('Email :', style: TextStyle(fontSize: 12.0, ),textAlign: TextAlign.left,)),
+                          TextFormField(
+                            enabled: false,
+                            initialValue: mydocument.email,
+                            decoration: textFormDecor.copyWith(hintText: 'email' ),
+                          ),
+                          SizedBox(height: 10.0,),
+                          RaisedButton.icon(
+                            onPressed: () async {
+                              if(_formkey.currentState.validate()) {
+                                await DatabaseService(uid: usersData.uid).updateUserData(
+                                    _currentusername ?? mydocument.username,
+                                    mydocument.email,
+                                    _currentphone ?? mydocument.telephone);
+                              }
+                              Navigator.pop(context);
+                            }, label: Text('Update') ,icon: Icon(Icons.send,textDirection: TextDirection.ltr,), color: Colors.orange[100], padding: EdgeInsets.symmetric(vertical: 10.0,horizontal: 40.0),)
+                        ],
                       ),
-                      SizedBox(height: 10.0,),
-                      Align(
-                          alignment: Alignment.centerLeft, child: new Text('Telephone :', style: TextStyle(fontSize: 12.0, ),textAlign: TextAlign.left,)),
-                      TextFormField(
-                        initialValue: mydocument.telephone,
-                        decoration: textFormDecor.copyWith(hintText: 'telephone' ),
-                        validator: (val) => val.isEmpty ? 'telephone is emty' : null,
-                        onChanged: (val){
-                          setState(() {
-                            _currentphone = val;
-                          });
-                        },
-                      ),
-                      SizedBox(height: 10.0,),
-                      Align(
-                          alignment: Alignment.centerLeft, child: new Text('Email :', style: TextStyle(fontSize: 12.0, ),textAlign: TextAlign.left,)),
-                      TextFormField(
-                        enabled: false,
-                        initialValue: mydocument.email,
-                        decoration: textFormDecor.copyWith(hintText: 'email' ),
-                      ),
-                      SizedBox(height: 10.0,),
-                      RaisedButton.icon(
-                        onPressed: () async {
-                          if(_formkey.currentState.validate()) {
-                            await DatabaseService(uid: usersData.uid).updateUserData(
-                                _currentusername ?? mydocument.username,
-                                mydocument.email,
-                                _currentphone ?? mydocument.telephone);
-                          }
-                          Navigator.pop(context);
-                        }, label: Text('Update') ,icon: Icon(Icons.send,textDirection: TextDirection.ltr,), color: Colors.orange[100], padding: EdgeInsets.symmetric(vertical: 10.0,horizontal: 40.0),)
-                    ],
-                  ),
+                    ),
                 ),
             );
           }else {

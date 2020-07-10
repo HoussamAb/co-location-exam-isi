@@ -28,10 +28,12 @@ class DatabaseService{
   ///////////////////////////////////////////////////////////////////////////////////
 
   // Managing offers
-  Future createAnnonce(String title, String images , String position , String details, int prix , int rate , bool stat, String superficie ,String address, int capacity,  String nuid) async {
+  Future createAnnonce(String title, String images1 ,String images2 ,String images3 , String position , String details, int prix , int rate , bool stat, String superficie ,String address, int capacity,  String nuid) async {
     return await annoncesCollection.add({
       'title': title,
-      'images': images,
+      'images1': images1,
+      'images2': images2,
+      'images3': images3,
       'position':position,
       'details':details,
       'prix':prix,
@@ -59,7 +61,9 @@ class DatabaseService{
     return snapshot.documents.map((e) {
       return Annonce(
         title: e.data['title'] ?? '',
-        images: e.data['images'] ?? '',
+        images1: e.data['images1'] ?? '',
+        images2: e.data['images2'] ?? '',
+        images3: e.data['images3'] ?? '',
         stat: e.data['stat'] ?? '',
         rate: e.data['rate'] ?? '',
         position: e.data['position'] ?? '',

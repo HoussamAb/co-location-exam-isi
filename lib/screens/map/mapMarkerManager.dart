@@ -1,25 +1,85 @@
 import 'package:colocexam/models/local.dart';
 import 'package:colocexam/screens/home/profile.dart';
+import 'package:colocexam/screens/map/index.dart';
 import 'package:colocexam/services/authService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map_tappable_polyline/flutter_map_tappable_polyline.dart';
+import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:latlong/latlong.dart';
-import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';
 
 
-class IndexMap extends StatefulWidget {
-  IndexMap({Key key, this.title}) : super(key: key);
-
+class MarkerManager extends StatefulWidget {
   final String title;
+  final Monument monument;
+  MarkerManager({Key key, this.title , this.monument}) : super(key: key);
+
   @override
-  _IndexMapState createState() => _IndexMapState();
+  _MarkerManagerState createState() => _MarkerManagerState();
 }
 
-class _IndexMapState extends State<IndexMap> {
+class _MarkerManagerState extends State<MarkerManager> {
 
   final AuthService _authService = AuthService();
   final PopupController _popupLayerController = PopupController();
+  final PopupController _popupController = PopupController();
+
+  List<Marker> markers;
+  int pointIndex;
+  List points = [
+    LatLng(51.5, -0.09),
+    LatLng(49.8566, 3.3522),
+  ];
+
+  @override
+  void initState() {
+    pointIndex = 0;
+    markers = [
+      Marker(
+        anchorPos: AnchorPos.align(AnchorAlign.center),
+        height: 30,
+        width: 30,
+        point: points[pointIndex],
+        builder: (ctx) => Icon(Icons.pin_drop),
+      ),
+      Marker(
+        anchorPos: AnchorPos.align(AnchorAlign.center),
+        height: 30,
+        width: 30,
+        point: LatLng(53.3498, -6.2603),
+        builder: (ctx) => Icon(Icons.pin_drop),
+      ),
+      Marker(
+        anchorPos: AnchorPos.align(AnchorAlign.center),
+        height: 30,
+        width: 30,
+        point: LatLng(53.3488, -6.2613),
+        builder: (ctx) => Icon(Icons.pin_drop),
+      ),
+      Marker(
+        anchorPos: AnchorPos.align(AnchorAlign.center),
+        height: 30,
+        width: 30,
+        point: LatLng(53.3488, -6.2613),
+        builder: (ctx) => Icon(Icons.pin_drop),
+      ),
+      Marker(
+        anchorPos: AnchorPos.align(AnchorAlign.center),
+        height: 30,
+        width: 30,
+        point: LatLng(48.8566, 2.3522),
+        builder: (ctx) => Icon(Icons.pin_drop),
+      ),
+      Marker(
+        anchorPos: AnchorPos.align(AnchorAlign.center),
+        height: 30,
+        width: 30,
+        point: LatLng(49.8566, 3.3522),
+        builder: (ctx) => Icon(Icons.pin_drop),
+      ),
+    ];
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +96,8 @@ class _IndexMapState extends State<IndexMap> {
       body: FlutterMap(
         options: MapOptions(
           plugins: <MapPlugin>[PopupMarkerPlugin()],
-          center: LatLng(48.857661, 2.295135),
-          zoom: 13.0,
+          center: LatLng(widget.monument.lat, widget.monument.long),
+          zoom: 15.0,
           interactive: true,
           onTap: (_) => _popupLayerController.hidePopup(),
         ),
@@ -50,18 +110,11 @@ class _IndexMapState extends State<IndexMap> {
             markers: <Marker>[
               MonumentMarker(
                 monument: Monument(
-                  name: 'Eiffel Tower',
-                  imagePath: null,
-                  lat: 48.857661,
-                  long: 2.295135,
+                  name: widget.monument.name,
+                  imagePath: widget.monument.imagePath,
+                  lat: widget.monument.lat,
+                  long: widget.monument.long,
                 ),
-              ),
-              Marker(
-                anchorPos: AnchorPos.align(AnchorAlign.top),
-                point: LatLng(48.859661, 2.305135),
-                height: Monument.size,
-                width: Monument.size,
-                builder: (BuildContext ctx) => Icon(Icons.shop),
               ),
             ],
             popupController: _popupLayerController,
@@ -79,6 +132,8 @@ class _IndexMapState extends State<IndexMap> {
 }
 
 
+
+
 class MonumentMarker extends Marker {
   MonumentMarker({@required this.monument})
       : super(
@@ -86,7 +141,7 @@ class MonumentMarker extends Marker {
     height: Monument.size,
     width: Monument.size,
     point: LatLng(monument.lat, monument.long),
-    builder: (BuildContext ctx) => Icon(Icons.camera_alt),
+    builder: (BuildContext ctx) => Icon(Icons.room),
   );
 
   final Monument monument;
@@ -107,7 +162,7 @@ class MonumentMarkerPopup extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Image.memory(monument.imagePath, width: 200),
+          Image.memory(monument.imagePath, width: 200),
             Text(monument.name),
             Text('${monument.lat}-${monument.long}'),
           ],
@@ -116,3 +171,4 @@ class MonumentMarkerPopup extends StatelessWidget {
     );
   }
 }
+

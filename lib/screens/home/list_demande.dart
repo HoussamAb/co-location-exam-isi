@@ -34,10 +34,10 @@ class ListDemds extends StatelessWidget {
     return StreamProvider<List<Demande>>.value(
       value: DatabaseService().usersDemande,
       child: Scaffold(
-        backgroundColor: Colors.orange[100],
+        backgroundColor: Colors.blueGrey[100],
         appBar: AppBar(
           title: Text('Liste demandes'),
-          backgroundColor: Colors.redAccent[100],
+          backgroundColor: Colors.grey,
           elevation: 0.0,
           actions: <Widget>[
             FlatButton.icon(onPressed: () async{ await _authService.logout(); }, icon: Icon(Icons.exit_to_app), label: Text('logout')),

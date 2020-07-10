@@ -1,8 +1,10 @@
+import 'package:colocexam/screens/home/annonce_form.dart';
 import 'package:colocexam/screens/home/demande_form.dart';
 import 'package:colocexam/screens/home/list_annonce.dart';
 import 'package:colocexam/screens/home/list_demande.dart';
 import 'package:colocexam/screens/home/profile.dart';
 import 'package:colocexam/screens/map/index.dart';
+import 'package:colocexam/screens/map/mapMarkerManager.dart';
 import 'package:colocexam/services/authService.dart';
 import 'package:flutter/material.dart';
 
@@ -49,7 +51,7 @@ class _homeState extends State<home> {
                 new Divider(),
                 new ListTile(
                   title: new Text('Crée une annonce'),
-                  onTap: () {},
+                  onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => AnnonceForm()));},
                 ),
                 new Divider(),
                 new ListTile(
@@ -64,7 +66,7 @@ class _homeState extends State<home> {
                 new Divider(),
                 new ListTile(
                   title: new Text('Logout'),
-                  onTap: () { _authService.logout();},
+                  onTap: () async {  await _authService.logout();},
                 ),
                 new Divider(),
                 new ListTile(
@@ -76,6 +78,7 @@ class _homeState extends State<home> {
               ],
             )
         ),
+
         body: Container(
 
           child:ListAnnoonce(),
@@ -83,9 +86,10 @@ class _homeState extends State<home> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => AnnonceForm()));
           },
           child: Icon(Icons.add),
-          backgroundColor: Colors.blueGrey[100],
+          backgroundColor: Colors.lightGreen[200],
         ),
       ),
     );
