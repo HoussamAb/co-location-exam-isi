@@ -55,13 +55,6 @@ class _IndexMapState extends State<IndexMap> {
                   long: 2.295135,
                 ),
               ),
-              Marker(
-                anchorPos: AnchorPos.align(AnchorAlign.top),
-                point: LatLng(48.859661, 2.305135),
-                height: Monument.size,
-                width: Monument.size,
-                builder: (BuildContext ctx) => Icon(Icons.shop),
-              ),
             ],
             popupController: _popupLayerController,
             popupBuilder: (_, Marker marker) {
@@ -85,7 +78,7 @@ class MonumentMarker extends Marker {
     height: Monument.size,
     width: Monument.size,
     point: LatLng(monument.lat, monument.long),
-    builder: (BuildContext ctx) => Icon(Icons.camera_alt),
+    builder: (BuildContext ctx) => Icon(Icons.pin_drop),
   );
 
   final Monument monument;

@@ -77,6 +77,7 @@ class _AnnonceFormState extends State<AnnonceForm> {
         lat = position.latitude;
         lon = position.longitude;
         _isGettingLocation = false;
+        _position = lat.toString()+","+lon.toString();
       });
     } on PlatformException catch (e) {
       print(e);
@@ -196,6 +197,7 @@ class _AnnonceFormState extends State<AnnonceForm> {
                               setState(() {
                                 _prix = int.parse(val);
                               });
+                              print(_position);
                             },
                           ),
                           SizedBox(height: 10.0,width: 0,),
@@ -232,7 +234,7 @@ class _AnnonceFormState extends State<AnnonceForm> {
                             if(_formkey.currentState.validate()) {
                               await DatabaseService(uid: usersData.uid).createAnnonce(
                                   _title ?? '',
-                                  _images1 ?? '',
+                                  _images1 ?? 'https://image.freepik.com/vecteurs-libre/maison-deux-etages_1308-16176.jpg',
                                   _images2 ?? '',
                                   _images3 ?? '',
                                   _position ?? '',
