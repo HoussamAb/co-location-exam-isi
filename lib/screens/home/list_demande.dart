@@ -1,3 +1,4 @@
+import 'package:colocexam/Dao/database.dart';
 import 'package:colocexam/models/demande.dart';
 import 'package:colocexam/screens/home/demande_ligne.dart';
 import 'package:colocexam/services/authService.dart';
@@ -15,8 +16,6 @@ class _ListDemandeState extends State<ListDemande> {
   Widget build(BuildContext context) {
     final listDemandes = Provider.of<List<Demande>>(context) ?? [];
 
-    print(listDemandes[0].commentaire);
-
     return  ListView.builder(
             itemCount: listDemandes.length,
             itemBuilder: (context, index) {
@@ -32,7 +31,7 @@ class ListDemds extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamProvider<List<Demande>>.value(
-      value: DatabaseService().usersDemande,
+      value: ServiceDb().usersDemande,
       child: Scaffold(
         backgroundColor: Colors.blueGrey[100],
         appBar: AppBar(
@@ -67,7 +66,7 @@ class _ShowListState extends State<ShowList> {
   Widget build(BuildContext context) {
 
     return StreamProvider<List<Demande>>.value(
-      value: DatabaseService().usersDemande,
+      value: ServiceDb().usersDemande,
         child: Scaffold(
             backgroundColor: Colors.orange[100],
             appBar: AppBar(

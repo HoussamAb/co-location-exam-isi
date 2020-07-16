@@ -1,5 +1,7 @@
+import 'package:colocexam/Dao/database.dart';
 import 'package:colocexam/partages/constantes.dart';
 import 'package:colocexam/partages/loading.dart';
+import 'package:colocexam/screens/home/home.dart';
 import 'package:colocexam/screens/map/index.dart';
 import 'package:colocexam/services/authService.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +19,7 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
 
   final AuthService _authService = AuthService();
+  final ServiceDb _authService_api = ServiceDb();
   final _formkey = GlobalKey<FormState>();
 
   String email = '';
@@ -132,13 +135,15 @@ class _RegisterState extends State<Register> {
                             setState(() {
                               loading = true;
                             });
-                            dynamic result = await _authService.registerWithEmailAndPassword(email, password);
+                            dynamic result = await _authService_api.registerWithEmailAndPassword(email, password,'user_'+email.substring(0,5));
                             if(result == null ){
                               setState(() {
                                 erreur = 'veillez entrer un email valide !';
                                 loading = false;
                               });
                             }
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => home()));
+
                           }
                         },
                       ),

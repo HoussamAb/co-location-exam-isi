@@ -1,3 +1,4 @@
+import 'package:colocexam/Dao/database.dart';
 import 'package:colocexam/screens/home/annonce_form.dart';
 import 'package:colocexam/screens/home/demande_form.dart';
 import 'package:colocexam/screens/home/list_annonce.dart';
@@ -15,6 +16,7 @@ class home extends StatefulWidget {
 
 class _homeState extends State<home> {
   final AuthService _authService = AuthService();
+  final ServiceDb service = ServiceDb();
 
 
   @override
@@ -86,6 +88,8 @@ class _homeState extends State<home> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
+            //service.test();
+            //service.signInWithEmailAndPassword("houssam@gmail.com", "12345678");
             Navigator.push(context, MaterialPageRoute(builder: (context) => AnnonceForm()));
           },
           child: Icon(Icons.add),

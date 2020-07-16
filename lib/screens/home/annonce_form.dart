@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:colocexam/Dao/database.dart';
 import 'package:colocexam/models/user.dart';
 import 'package:colocexam/partages/constantes.dart';
 import 'package:colocexam/partages/loading.dart';
@@ -21,6 +23,8 @@ class AnnonceForm extends StatefulWidget {
 
 class _AnnonceFormState extends State<AnnonceForm> {
   final AuthService _authService = AuthService();
+  final ServiceDb _authService_api = ServiceDb();
+
   final _formkey = GlobalKey<FormState>();
   String _images1;
   String _images2;
@@ -90,14 +94,7 @@ class _AnnonceFormState extends State<AnnonceForm> {
 
   @override
   Widget build(BuildContext context) {
-    final usersData = Provider.of<User>(context);
-
-
-    return StreamBuilder<UserDocument>(
-        stream: DatabaseService(uid: usersData.uid).userDocument,
-        builder:(context,snapshot) {
-          if(snapshot.hasData){
-            UserDocument mydocument = snapshot.data;
+            UserDocument mydocument = ServiceDb.currentUser;
             return Scaffold(
               appBar:AppBar(
                 title: Text('nouvelle annonce'),
@@ -232,7 +229,7 @@ class _AnnonceFormState extends State<AnnonceForm> {
                           SizedBox(height: 10.0,),
                           RaisedButton.icon(onPressed: () async {
                             if(_formkey.currentState.validate()) {
-                              await DatabaseService(uid: usersData.uid).createAnnonce(
+                              await ServiceDb(uid: mydocument.uid).createAnnonce(
                                   _title ?? '',
                                   _images1 ?? 'https://image.freepik.com/vecteurs-libre/maison-deux-etages_1308-16176.jpg',
                                   _images2 ?? '',
@@ -245,7 +242,7 @@ class _AnnonceFormState extends State<AnnonceForm> {
                                   _superficie ?? 0,
                                   _address ?? 0,
                                   _capacity ?? 0,
-                                  usersData.uid);
+                                  mydocument.uid);
                               Navigator.pop(context);
                             }
                             //
@@ -256,10 +253,16 @@ class _AnnonceFormState extends State<AnnonceForm> {
                 ),
               ),
             );
-          }else {
-            return Loading();
           }
-        }
-    );
+
+/*
+  @override
+  void initState() {
+     _authService_api.userController = new StreamController();
+     Timer.periodic(Duration(seconds: 1), (_) => _authService_api.loadDetails());
+     //_authService_api.loadDetails();
+    super.initState();
   }
+  int count = 1;*/
+
 }

@@ -1,3 +1,4 @@
+import 'package:colocexam/Dao/database.dart';
 import 'package:colocexam/models/annonce.dart';
 import 'package:colocexam/screens/home/annonce_ligne.dart';
 import 'package:colocexam/services/authService.dart';
@@ -32,7 +33,7 @@ class ListAnnoonce extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamProvider<List<Annonce>>.value(
-      value: DatabaseService().usersAnnonce,
+      value: ServiceDb().usersAnnonce,
       child: Scaffold(
 
         body: Container(

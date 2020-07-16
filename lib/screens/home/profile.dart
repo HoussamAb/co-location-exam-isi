@@ -1,3 +1,4 @@
+import 'package:colocexam/Dao/database.dart';
 import 'package:colocexam/models/user.dart';
 import 'package:colocexam/partages/constantes.dart';
 import 'package:colocexam/partages/loading.dart';
@@ -21,11 +22,7 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     final usersData = Provider.of<User>(context);
 
-    return StreamBuilder<UserDocument>(
-        stream: DatabaseService(uid: usersData.uid).userDocument,
-        builder:(context,snapshot) {
-          if(snapshot.hasData){
-            UserDocument mydocument = snapshot.data;
+            UserDocument mydocument = ServiceDb.currentUser;
             return Scaffold(
               appBar: AppBar(
                 title: Text('Profile'),
@@ -92,10 +89,5 @@ class _ProfileState extends State<Profile> {
                     ),
                 ),
             );
-          }else {
-            return Loading();
           }
-        }
-    );
-  }
 }

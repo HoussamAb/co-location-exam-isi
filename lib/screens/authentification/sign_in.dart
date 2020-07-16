@@ -1,5 +1,7 @@
+import 'package:colocexam/Dao/database.dart';
 import 'package:colocexam/partages/constantes.dart';
 import 'package:colocexam/partages/loading.dart';
+import 'package:colocexam/screens/home/home.dart';
 import 'package:colocexam/screens/map/index.dart';
 import 'package:colocexam/services/authService.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,6 +22,7 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
 
   final AuthService _authService = AuthService();
+  final ServiceDb _authService_api = ServiceDb();
   final _formkey = GlobalKey<FormState>();
 
   String email = '';
@@ -122,7 +125,7 @@ class _SignInState extends State<SignIn> {
                         obscureText: true,
                         onChanged: (val){
                           setState(() {
-                            password = val;
+                            password = val.trim();
                           });
                         },
                       ),
@@ -134,14 +137,16 @@ class _SignInState extends State<SignIn> {
                         ),
                         onPressed: () async {
                           if(_formkey.currentState.validate()){
-                            setState(() {loading = true; });
-                              dynamic result = await _authService.signInWithEmailAndPassword(email, password);
+                            setState(() { loading = true;
+                               });
+                              dynamic result = await _authService_api.signInWithEmailAndPassword(email, password);
                               if(result == null ){
                                 setState(() {
                                   erreur = 'vos données de connexion sont incorrect  !';
                                   loading = false;
                                 });
                               }
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => home()));
                           }
                         },
 

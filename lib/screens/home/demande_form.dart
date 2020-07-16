@@ -1,3 +1,4 @@
+import 'package:colocexam/Dao/database.dart';
 import 'package:colocexam/models/user.dart';
 import 'package:colocexam/partages/constantes.dart';
 import 'package:colocexam/partages/loading.dart';
@@ -22,11 +23,9 @@ class _DemandeFormState extends State<DemandeForm> {
   Widget build(BuildContext context) {
     final usersData = Provider.of<User>(context);
 
-    return StreamBuilder<UserDocument>(
-        stream: DatabaseService(uid: usersData.uid).userDocument,
-        builder:(context,snapshot) {
-          if(snapshot.hasData){
-            UserDocument mydocument = snapshot.data;
+
+            UserDocument mydocument = ServiceDb.currentUser;
+            print('id: ${mydocument.uid}');
             return Scaffold(
                 appBar:AppBar(
                   title: Text('nouvelle demande'),
@@ -78,11 +77,11 @@ class _DemandeFormState extends State<DemandeForm> {
                           SizedBox(height: 10.0,),
                           RaisedButton.icon(onPressed: () async {
                             if(_formkey.currentState.validate()) {
-                              await DatabaseService(uid: usersData.uid).createDemande(
+                              await ServiceDb(uid: mydocument.uid).createDemande(
                                   _currentcordonnees ?? '',
                                   _currentcorps ?? '',
                                   _currentbudger ?? '',
-                                  usersData.uid);
+                                  mydocument.uid);
                               Navigator.pop(context);
                             }
                             //
@@ -93,10 +92,6 @@ class _DemandeFormState extends State<DemandeForm> {
                   ),
                 ),
             );
-          }else {
-            return Loading();
           }
         }
-    );
-  }
-}
+

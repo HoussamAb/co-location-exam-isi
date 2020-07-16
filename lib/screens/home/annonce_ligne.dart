@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:colocexam/Dao/database.dart';
 import 'package:colocexam/models/annonce.dart';
 import 'package:colocexam/models/local.dart';
 import 'package:colocexam/models/user.dart';
@@ -30,14 +31,15 @@ class _annonce_ligneState extends State<annonce_ligne> {
       widget.annonce.images1,
       widget.annonce.images2,
       widget.annonce.images3
-      ];
+    ];
 
-    void handlePopUpChanged(String value,String phone) async {
-      choix =  value;
-      if(choix == 'voir details'){
+    void handlePopUpChanged(String value, String phone) async {
+      choix = value;
+      if (choix == 'voir details') {
         _userphone = phone;
-        Navigator.push(context, MaterialPageRoute(builder: (context) => AnnonceSingle(annonce: widget.annonce,phone: _userphone)));
-      }else if(choix == 'voir sur map'){
+        Navigator.push(context, MaterialPageRoute(builder: (context) =>
+            AnnonceSingle(annonce: widget.annonce, phone: _userphone)));
+      } else if (choix == 'voir sur map') {
         dynamic position = widget.annonce.position.split(',');
         Monument monument = new Monument();
         monument.name = widget.annonce.title;
@@ -47,16 +49,17 @@ class _annonce_ligneState extends State<annonce_ligne> {
         monument.long = double.parse(position[1]);
 
 
-
-        Navigator.push(context, MaterialPageRoute(builder: (context) => MarkerManager(monument: monument,)));
-      }else{
+        Navigator.push(context, MaterialPageRoute(
+            builder: (context) => MarkerManager(monument: monument,)));
+      } else {
 
       }
+
       /// Log the selected lucky number to the console.
 
     }
 
-    List<String> menuitems = ['voir sur map','voir details'];
+    List<String> menuitems = ['voir sur map', 'voir details'];
     List<PopupMenuItem> luckyNumbers = [];
     for (String item in menuitems) {
       luckyNumbers.add(
@@ -68,53 +71,55 @@ class _annonce_ligneState extends State<annonce_ligne> {
     }
 
 
+    UserDocument mydocument = ServiceDb.currentUser;
+    return Padding(
+      padding: EdgeInsets.only(top: 4.0),
+      child: Card(
+          margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
+          child: ListTile(
 
-    return StreamBuilder<UserDocument>(
-        stream: DatabaseService(uid: usersData.uid).userDocument,
-        builder:(context,snapshot) {
-          UserDocument mydocument = snapshot.data;
-          return  Padding (
-              padding: EdgeInsets.only(top: 4.0),
-              child: Card(
-                  margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
-                  child: ListTile(
+            leading: SizedBox(
+              height: 300.0,
+              width: 50.0, // fixed width and height
+              child:
+              CarouselSlider(
+                options: CarouselOptions(
+                  autoPlay: true,
+                  aspectRatio: 2.0,
+                  enlargeCenterPage: true,
+                  autoPlayAnimationDuration: Duration(seconds: 2),
+                ),
+                items: imgList.map((item) =>
+                    Container(
+                      child: new Image.memory(Base64Decoder().convert(item),),
+                      width: 100,
+                      height: 100,
 
-                      leading: SizedBox(
-                        height: 300.0,
-                        width: 50.0, // fixed width and height
-                        child:
-                          CarouselSlider(
-                        options: CarouselOptions(
-                          autoPlay: true,
-                          aspectRatio: 2.0,
-                          enlargeCenterPage: true,
-                          autoPlayAnimationDuration: Duration(seconds: 2),
-                        ),
-                        items: imgList.map((item) => Container(
-                          child: new Image.memory(Base64Decoder().convert(item),),
-                          width: 100,
-                          height: 100,
-
-                        )).toList(),
-                      ),
-                      ),
-                      title: Text(widget.annonce.title),
-                      subtitle: Text('Details\t :\t ${widget.annonce.details} \nSupérfécie\t :\t ${widget.annonce.details} \nCapacité\t :\t ${widget.annonce.capacity} Personne(s) \nPrix\t :\t ${widget.annonce.prix} Dh/mois') ,
-                       trailing: new PopupMenuButton(
-                         key: _menuKey,
-                         onSelected: (selectedDropDownItem) => handlePopUpChanged(selectedDropDownItem,mydocument.telephone),
-                         itemBuilder: (BuildContext context) => luckyNumbers,
-                         tooltip: "cliquer pour selectionner une action.",
-                      ),
-                      /// trailing: Icon(Icons.more_vert),
-                      onTap: () {
-                      dynamic popUpMenustate = _menuKey.currentState;
-                      popUpMenustate.showButtonMenu();
-                      },
-                  )
+                    )).toList(),
               ),
-          );
-        }
+            ),
+            title: Text(widget.annonce.title),
+            subtitle: Text('Details\t :\t ${widget.annonce
+                .details} \nSupérfécie\t :\t ${widget.annonce
+                .details} \nCapacité\t :\t ${widget.annonce
+                .capacity} Personne(s) \nPrix\t :\t ${widget.annonce
+                .prix} Dh/mois'),
+            trailing: new PopupMenuButton(
+              key: _menuKey,
+              onSelected: (selectedDropDownItem) =>
+                  handlePopUpChanged(
+                      selectedDropDownItem, mydocument.telephone),
+              itemBuilder: (BuildContext context) => luckyNumbers,
+              tooltip: "cliquer pour selectionner une action.",
+            ),
+
+            /// trailing: Icon(Icons.more_vert),
+            onTap: () {
+              dynamic popUpMenustate = _menuKey.currentState;
+              popUpMenustate.showButtonMenu();
+            },
+          )
+      ),
     );
   }
 }
