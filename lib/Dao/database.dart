@@ -6,6 +6,7 @@ import 'package:colocexam/models/annonce.dart';
 import 'package:colocexam/models/demande.dart';
 import 'package:colocexam/models/user.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 
 class ServiceDb {
   final String uid;
@@ -14,8 +15,8 @@ class ServiceDb {
 
   bool stat = false;
   static UserDocument currentUser;
-  static List<Annonce> annonces = null;
-  static List<Demande> demandes = null;
+  static List<Annonce> annonces ;
+  static List<Demande> demandes ;
 
   StreamController<UserDocument> userController;
   StreamController<User> loginuser;
@@ -53,6 +54,8 @@ class ServiceDb {
         "password": password,
       });
       Response result =  await dio.post( api+"api/auth/login", data:formData,options: Options(contentType:Headers.formUrlEncodedContentType ));
+      AllDemande();
+      AllAnnonce();
       return _getuserfromrequest(result);
     }catch(ex){
       print(ex);
@@ -160,7 +163,7 @@ class ServiceDb {
         'stat': stat,
         'address':address,
         'capacity':capacity,
-        'superficie':superficie,
+        'superfice':superficie,
         'user_id': nuid,
       });
       Response result =  await dio.post( api+"api/annonce", data:formData,options: Options(contentType:Headers.formUrlEncodedContentType ));
@@ -173,38 +176,24 @@ class ServiceDb {
   }
   // delete offers
   Future deleteAnnonce (String id) async {
-    return await dio.get("api/annonce/"+id);
+    return await dio.get(api+"api/annonce/"+id);
   }
 
   Future AllAnnonce () async {
-    dynamic allannonces = await dio.get("api/annonces");
-    annonces = mapAnnonce(allannonces);
+    dynamic allannonces = await dio.get(api+"api/annonces");
+    final json =  jsonDecode(allannonces.toString());
+    final items = (json['data'] as List).map((i) => new Annonce.fromJson(i));
+    annonces = items.toList();
+    print(annonces.length);
     return annonces;
   }
   // get the list of offers of user
   Stream<List<Annonce>> get usersAnnonce {
+    AllAnnonce();
     return Stream.value(annonces);
   }
   // convert data to list of offers
-  List<Annonce> mapAnnonce(dynamic annonce){
-    return annonce((e) {
-      return Annonce(
-        title: e['title'] ?? '',
-        images1: e['images1'] ?? '',
-        images2: e['images2'] ?? '',
-        images3: e['images3'] ?? '',
-        stat: e['stat'] ?? '',
-        rate: e['rate'] ?? '',
-        position: e['position'] ?? '',
-        details: e['details'] ?? '',
-        prix: e['prix'] ?? '',
-        address: e['address'] ?? '',
-        capacity: e['capacity'] ?? '',
-        superficie: e['superficie'] ?? '',
-        nuid: e['nuid'] ?? '',
-      );
-    }).toList();
-  }
+
 // end managing offers
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -230,43 +219,33 @@ class ServiceDb {
   }
   // delete offers
   Future deleteDemande (String id) async {
-    return await dio.get("api/demande/"+id);
+    return await dio.get(api+"api/demande/"+id);
   }
 
   Future  AllDemande() async {
-    Response alldemandes = await dio.get(api+"api/demandes");
-    dynamic json =  jsonDecode(alldemandes.toString());
-    alldemandes = json['data'];
-    print(alldemandes);
-    demandes = mapDemande(alldemandes);
-    print(demandes);
+    dynamic alldemandes = await dio.get(api+"api/demandes");
+    final json =  jsonDecode(alldemandes.toString());
+    final items = (json['data'] as List).map((i) => new Demande.fromJson(i));
+    demandes =  items.toList();
+    print(demandes.length);
     return demandes;
   }
   // get the list of offers of user
-  Stream<List<Demande>> get usersDemande {
+  Stream<List<Demande>> get usersDemande  {
     AllDemande();
-    return Stream.value(demandes);
+    return  Stream.value(demandes);
   }
   // convert data to list of offers
-  /*List<Demande> mapDemande(dynamic demande){
-    dynamic d = jsonDecode(demande);
-    print(d[0].toString());
-    return d((e) {
-      return Demande(
-        cordonnees: e['cordonnees'] ?? '',
-        budgesmax: e['budgesmax'] ?? '',
-        commentaire: e['commentaire'] ?? '',
-        nuid: e['nuid'] ?? '',
-      );
-    }).toList();
-  }*/
-  List<Demande> mapDemande(demande){
-    final parsed = json.decode(demande.toString());
-    print(parsed.toString());
+
+
+
+
+  /*List<Demande> mapDemande(demande){
+    print(demande[0]);
    // return (parsed[]["categoryList"] as List).map<Demande>((json) =>
    // new Photo.fromJson(json)).toList();
 
-  }
+  }*/
 
 // end managing offers
 

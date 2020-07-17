@@ -14,7 +14,8 @@ class Annonces_list extends StatefulWidget {
 class _Annonces_listState extends State<Annonces_list> {
   @override
   Widget build(BuildContext context) {
-    final listAnonnces = Provider.of<List<Annonce>>(context) ?? [];
+    List<Annonce> listAnonnces = ServiceDb.annonces ?? [];
+    print('list: ${listAnonnces.length}');
 
     /// print(listAnonnces);
     return ListView.builder(

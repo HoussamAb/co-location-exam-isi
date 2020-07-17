@@ -14,8 +14,9 @@ class ListDemande extends StatefulWidget {
 class _ListDemandeState extends State<ListDemande> {
   @override
   Widget build(BuildContext context) {
-    final listDemandes = Provider.of<List<Demande>>(context) ?? [];
 
+    List<Demande> listDemandes = ServiceDb.demandes ?? [];
+    print('list: ${listDemandes}');
     return  ListView.builder(
             itemCount: listDemandes.length,
             itemBuilder: (context, index) {
@@ -23,6 +24,7 @@ class _ListDemandeState extends State<ListDemande> {
             },
     );
   }
+
 }
 
 class ListDemds extends StatelessWidget {
@@ -50,7 +52,9 @@ class ListDemds extends StatelessWidget {
       ),
     );
   }
+
 }
+
 
 
 
