@@ -54,8 +54,8 @@ class ServiceDb {
         "password": password,
       });
       Response result =  await dio.post( api+"api/auth/login", data:formData,options: Options(contentType:Headers.formUrlEncodedContentType ));
-      AllDemande();
       AllAnnonce();
+      AllDemande();
       return _getuserfromrequest(result);
     }catch(ex){
       print(ex);
@@ -100,6 +100,7 @@ class ServiceDb {
       });
       Response result =  await dio.post( api+"api/auth/register",data:formData,options: Options(contentType:Headers.formUrlEncodedContentType ));
       print(result.toString());
+      signInWithEmailAndPassword(email,password);
       return _getuserfromrequest(result);
     }catch(ex){
       print(ex);

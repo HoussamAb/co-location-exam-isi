@@ -98,12 +98,12 @@ class _annonce_ligneState extends State<annonce_ligne> {
                     )).toList(),
               ),
             ),
-            title: Text(widget.annonce.title),
+            title: Text(widget.annonce.title.toString()),
             subtitle: Text('Details\t :\t ${widget.annonce
                 .details} \nSupérfécie\t :\t ${widget.annonce
-                .details} \nCapacité\t :\t ${widget.annonce
-                .capacity} Personne(s) \nPrix\t :\t ${widget.annonce
-                .prix} Dh/mois'),
+                .superficie} \nCapacité\t :\t ${widget.annonce
+                .capacity.toString()} Personne(s) \nPrix\t :\t ${widget.annonce
+                .prix.toString()} Dh/mois'),
             trailing: new PopupMenuButton(
               key: _menuKey,
               onSelected: (selectedDropDownItem) =>

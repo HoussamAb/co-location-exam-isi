@@ -242,7 +242,7 @@ class _AnnonceFormState extends State<AnnonceForm> {
                                   _superficie ?? 0,
                                   _address ?? 0,
                                   _capacity ?? 0,
-                                  mydocument.uid);
+                                  mydocument.uid ?? 1);
                               Navigator.pop(context);
                             }
                             //
